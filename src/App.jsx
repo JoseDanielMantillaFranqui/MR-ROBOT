@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import Footer from "./components/Footer";
 import { useState, useEffect, useRef } from "react";
+import CircularProgress from '@mui/material/CircularProgress';
 import { IoSend } from "react-icons/io5";
 import './App.css'
 
@@ -32,6 +33,7 @@ const BotonObtenerRespuesta = styled.button`
   font-style: italic;
   cursor: pointer;
   border: none;
+  align-self: normal;
 
   @media screen and (max-width:480px) {
     font-size:0.932rem;
@@ -120,7 +122,7 @@ const MensajeIA = styled.div`
   font-style: italic;
 
   @media screen and (max-width:480px) {
-    width: 63%;
+    width: 75%;
   }
 `
 
@@ -131,7 +133,7 @@ const TituloMensaje = styled.h1`
 const App = () => {
 
     const [generatedContent, setGeneratedContent] = useState({});
-    const [respuesta, setRespuesta] = useState({ status: 'IN_QUEUE'})
+    const [respuesta, setRespuesta] = useState({})
     const [obtenerRespuesta, setObtenerRespuesta] = useState(false)
     const [promptUsuario, setPromptUsuario] = useState('')
     const [obteniendoRespuestaIntervalo, setObteniendoRespuestaIntervalo] = useState()
@@ -209,6 +211,7 @@ const App = () => {
     }, [generatedContent])
 
     useEffect(() => {
+      console.log(respuesta)
       if (respuesta.status === 'COMPLETED') {
         setObtenerRespuesta(false)
         clearInterval(obteniendoRespuestaIntervalo)
@@ -220,12 +223,15 @@ const App = () => {
 
         setMessages([...messages, newIAMessage])
         setPromptUsuario('')
+        setIsEmptyPromptUsuario(false)
       }
     },[respuesta])
 
     const handleSubmitGetResponse = (e) => {
       e.preventDefault()
-      if (isEmptyPromptUsuario === false) return;
+
+
+      if (isEmptyPromptUsuario === false || respuesta.status === 'IN_QUEUE' || respuesta.status === 'IN_PROGRESS') return;
       const newUserMessage = {
         user: 'Tú',
         message: promptUsuario
@@ -275,7 +281,7 @@ return <>
         </ContenedorMensajes>
         <FormularioChat onSubmit={handleSubmitGetResponse}>
           <InputPrompt placeholder="Escribe algo para preguntar" ref={textareaChatRef} cols='1' rows='1' value={promptUsuario} onChange={handleInputPromptUser} />
-          <BotonObtenerRespuesta type="submit"><IoSend style={{ color: isEmptyPromptUsuario ? 'black' : '#00000087' }}/></BotonObtenerRespuesta>
+          <BotonObtenerRespuesta type="submit">{ (respuesta.status === 'IN_QUEUE' || respuesta.status === 'IN_PROGRESS') ? <CircularProgress style={{ color: '#000'}} size={15} /> : <IoSend style={{ color: isEmptyPromptUsuario ? 'black' : '#00000087' }}/> }</BotonObtenerRespuesta>
         </FormularioChat>     
       </ContenedorChat>
   </ContenedorPrincipal>
