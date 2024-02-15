@@ -25,7 +25,6 @@ const TituloPrincipal = styled.h1`
 const BotonObtenerRespuesta = styled.button`
   font-size: 1.4rem;
   padding: 1rem;
-  border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;
   background-color: white;
   color: black;
@@ -43,7 +42,6 @@ const BotonObtenerRespuesta = styled.button`
 const InputPrompt = styled.textarea`
   font-size: 1.5rem;
   padding: 1rem 1rem 1rem 1rem;
-  border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
   background-color: white;
   color: black;
@@ -66,7 +64,7 @@ const ContenedorChat = styled.div`
   height: max-content;
   border: 2px solid #fff;
   border-bottom: none;
-  border-radius: 27px;
+  border-radius: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,12 +92,14 @@ const ContenedorMensajes = styled.div`
   height: max-content;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   padding: 1rem;
 `
 
-const MensajeUsuario = styled.p`
-  width: 45%;
-  padding: .5rem;
+const MensajeUsuario = styled.div`
+  width: max-content;
+  max-width: 45%;
+  padding: .5rem .8rem .5rem .5rem;
   color: white;
   font-size: 1rem;
   font-style: italic;
@@ -107,22 +107,26 @@ const MensajeUsuario = styled.p`
   text-align: end;
   border-radius: 20px;
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #ffffff2f;
+  
 
   @media screen and (max-width:480px) {
-    width: 63%;
+    max-width: 63%;
   }
 `
 const MensajeIA = styled.div`
-  width: 45%;
+  max-width: 45%;
+  width: max-content;
   font-size:1rem;
   color: white;
   padding: .5rem;
   border-radius: 20px;
   font-family: Arial, Helvetica, sans-serif;
   font-style: italic;
+  background-color: #ffffff2f;
 
   @media screen and (max-width:480px) {
-    width: 75%;
+    max-width: 75%;
   }
 `
 
