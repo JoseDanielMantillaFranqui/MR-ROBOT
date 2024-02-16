@@ -3,3 +3,8 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+@font-face {
+    font-family: 'MR_ROBOT';
+    src: url('../public/MR_ROBOT.woff') format('truetype');
+}

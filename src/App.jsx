@@ -16,8 +16,8 @@ const ContenedorPrincipal = styled.section`
 `
 
 const TituloPrincipal = styled.h1`
-  font-family: "Bungee Shade", sans-serif;
-  font-size: 3rem;
+  font-family: "MR_ROBOT", sans-serif;
+  font-size: 3.5rem;
   color: #fffdfd;
   font-weight: 400;
 `
@@ -115,7 +115,6 @@ const MensajeUsuario = styled.div`
   font-style: italic;
   align-self:flex-end;
   text-align: end;
-  text-justify: ;
   border-radius: 20px;
   font-family: Arial, Helvetica, sans-serif;
   background-color: #ffffff2f;
