@@ -196,6 +196,7 @@ const App = () => {
 
       if (obtenerRespuesta === true) {
         fetchingData()
+        setRespuesta({status: 'IN_QUEUE'})
       }
 
     }, [obtenerRespuesta]);
