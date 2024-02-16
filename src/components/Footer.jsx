@@ -29,7 +29,7 @@ const LogoFooter = styled.img`
 const Footer = () => {
     return <StyledFooter>
         <LinkPortafolio href="https://josedanielmantillafranqui.github.io/PORTAFOLIO/">
-          <LogoFooter src='logo-footer.jpg' />
+          <LogoFooter src='logo-footer.jpeg' alt="Logo de Daniel Franqui" />
         </LinkPortafolio>
     </StyledFooter>
 }

@@ -23,7 +23,7 @@ const TituloPrincipal = styled.h1`
 `
 
 const BotonObtenerRespuesta = styled.button`
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   padding: 1rem;
   border-bottom-right-radius: 30px;
   background-color: white;
@@ -62,7 +62,7 @@ const ContenedorChat = styled.div`
   width: 60%;
   min-height: 400px;
   height: max-content;
-  border: 2px solid #fff;
+  border: 2px solid #E3E3E3;
   border-bottom: none;
   border-radius: 32px;
   display: flex;
@@ -73,6 +73,16 @@ const ContenedorChat = styled.div`
   @media screen and (max-width:480px) {
     width: 90%;
   }
+`
+
+const ImagenChat = styled.img`
+width: 50%;
+align-self: center;
+
+@media screen and (max-width:480px) {
+  width: 90%;
+  margin-bottom: 2rem;
+}
 `
 
 const FormularioChat = styled.form`
@@ -105,9 +115,13 @@ const MensajeUsuario = styled.div`
   font-style: italic;
   align-self:flex-end;
   text-align: end;
+  text-justify: ;
   border-radius: 20px;
   font-family: Arial, Helvetica, sans-serif;
   background-color: #ffffff2f;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   
 
   @media screen and (max-width:480px) {
@@ -124,6 +138,9 @@ const MensajeIA = styled.div`
   font-family: Arial, Helvetica, sans-serif;
   font-style: italic;
   background-color: #ffffff2f;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
   @media screen and (max-width:480px) {
     max-width: 75%;
@@ -132,6 +149,10 @@ const MensajeIA = styled.div`
 
 const TituloMensaje = styled.h1`
   font-weight: bold;
+`
+
+const ImgMensajeIA = styled.img`
+  width: 20%;
 `
 
 const App = () => {
@@ -200,7 +221,6 @@ const App = () => {
      
       if (obtenerRespuesta === true && generatedContent?.status_url) {
         const fetchDataInterval = setInterval(() => {
-          console.log('funcionando intervalo')
             const setearResIA = async () => {
             const newRespuesta = await fetchingData()
             setRespuesta(newRespuesta)
@@ -215,7 +235,6 @@ const App = () => {
     }, [generatedContent])
 
     useEffect(() => {
-      console.log(respuesta)
       if (respuesta.status === 'COMPLETED') {
         setObtenerRespuesta(false)
         clearInterval(obteniendoRespuestaIntervalo)
@@ -278,9 +297,11 @@ return <>
       <ContenedorChat>
         <ContenedorMensajes>
           {
-            messages[0]?.user && messages.map((message, index) => {
-              return message.user === 'Tú' ? <MensajeUsuario key={index}><TituloMensaje>{message.user}</TituloMensaje>{message.message}</MensajeUsuario> : <MensajeIA key={index}><TituloMensaje>{message.user}</TituloMensaje>{message.message}</MensajeIA>
+            messages[0]?.user ? messages.map((message, index) => {
+              return message.user === 'Tú' ? <MensajeUsuario key={index}><TituloMensaje>{message.user}</TituloMensaje>{message.message}</MensajeUsuario> : <MensajeIA key={index}><TituloMensaje><ImgMensajeIA src="icon_mr_robot.svg"/></TituloMensaje>{message.message}</MensajeIA>
             })
+            :
+            <ImagenChat src="img_mr_robot.svg" alt="Imagen de Mr Robot presentándose"/>
           }
         </ContenedorMensajes>
         <FormularioChat onSubmit={handleSubmitGetResponse}>
