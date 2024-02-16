@@ -11,9 +11,13 @@ const StyledFooter = styled.footer`
 `
 
 const LinkPortafolio = styled.a`
-    width: 70%;
+    width: 20%;
     display: grid;
     place-items: center;
+
+    @media screen and (max-width:480px) {
+        width: 70%;
+    }
 `
 
 const LogoFooter = styled.img`
@@ -22,7 +26,7 @@ const LogoFooter = styled.img`
     box-shadow: 0 0 20px #ffffff3d;
 
     @media screen and (min-width: 901px) and (max-width:1600px) {
-        width: 30%;
+        width: 100%;
     }
 `
 
