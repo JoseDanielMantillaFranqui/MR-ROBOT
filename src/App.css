@@ -6,5 +6,5 @@
 
 @font-face {
     font-family: 'MR_ROBOT';
-    src: url('../public/MR_ROBOT.woff') format('truetype');
+    src: url('/MR_ROBOT.woff') format('truetype');
 }
