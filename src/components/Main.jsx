@@ -32,9 +32,13 @@ const BotonObtenerRespuesta = styled.button`
   color: black;
   font-family: Arial, Helvetica, sans-serif;
   font-style: italic;
-  cursor: pointer;
+  cursor: ${props => props.propbackground === 'true' ? 'pointer' : 'default' };
   border: none;
   align-self: normal;
+
+  &:active {
+    background-color: ${props => props.propbackground === 'true' ? '#1d1d1d' : '#E3E3E3'};
+  }
 
   @media screen and (max-width:480px) {
     font-size:0.932rem;
@@ -159,6 +163,14 @@ const ImgMensajeIA = styled.img`
   width: 20%;
 `
 
+const IconoEnviar = styled(IoSend)`
+  color: ${props => props.propcolor === 'true' ? '#000' : '#00000087' };
+
+  ${BotonObtenerRespuesta}:active & {
+    color: ${props => props.propcolor === 'true' ? '#fff' : '#00000087'};
+  }
+`
+
 const Main = () => {
 
     const {
@@ -186,7 +198,7 @@ const Main = () => {
       </ContenedorMensajes>
       <FormularioChat onSubmit={handleSubmitGetResponse}>
         <InputPrompt placeholder="Escribe algo para preguntar" ref={textareaChatRef} cols='1' rows='1' value={promptUsuario} onChange={handleInputPromptUser} />
-        <BotonObtenerRespuesta type="submit">{ (respuesta.status === 'IN_QUEUE' || respuesta.status === 'IN_PROGRESS') ? <CircularProgress style={{ color: '#000'}} size={15} /> : <IoSend style={{ color: isEmptyPromptUsuario ? 'black' : '#00000087' }}/> }</BotonObtenerRespuesta>
+        <BotonObtenerRespuesta type="submit" propbackground={isEmptyPromptUsuario.toString()}>{ (respuesta.status === 'IN_QUEUE' || respuesta.status === 'IN_PROGRESS') ? <CircularProgress style={{ color: '#000'}} size={15} /> : <IconoEnviar propcolor={isEmptyPromptUsuario.toString()} /> }</BotonObtenerRespuesta>
       </FormularioChat>     
     </ContenedorChat>
 </ContenedorPrincipal>
