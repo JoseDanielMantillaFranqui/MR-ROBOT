@@ -32,7 +32,7 @@ const LogoFooter = styled.img`
 
 const Footer = () => {
     return <StyledFooter>
-        <LinkPortafolio href="https://josedanielmantillafranqui.github.io/PORTAFOLIO/">
+        <LinkPortafolio href="https://daniels-portafolio.vercel.app/">
           <LogoFooter src='logo-footer.jpeg' alt="Logo de Daniel Franqui" />
         </LinkPortafolio>
     </StyledFooter>
