@@ -14,3 +14,9 @@ body {
     font-family: 'MR_ROBOT';
     src: url('/MR_ROBOT.woff') format('truetype');
 }
+
+@media screen and (min-width: 1000px) and (max-width:2000px) {
+    body {
+        background-image: linear-gradient(to right, #ffffff15 1px, transparent 1px), linear-gradient(to bottom, #ffffff19 1px, transparent 1px);
+    }
+}

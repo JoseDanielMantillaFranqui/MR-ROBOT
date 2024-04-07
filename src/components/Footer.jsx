@@ -22,7 +22,7 @@ const LinkPortafolio = styled.a`
 const LogoFooter = styled.img`
     width: 90%;
     border-radius: 30px;
-    box-shadow: 0 0 20px #ffffff3d;
+    box-shadow: 0 0 100px #ffffff2f;
 
     @media screen and (min-width: 901px) and (max-width:1600px) {
         width: 100%;
