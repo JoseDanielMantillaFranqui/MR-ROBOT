@@ -7,7 +7,6 @@ const StyledFooter = styled.footer`
     justify-content: center;
     padding: 2rem 0;
     border-top: 2px solid white;
-    background-color: black;
 `
 
 const LinkPortafolio = styled.a`

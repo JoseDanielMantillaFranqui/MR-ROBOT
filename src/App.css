@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+body {
+    background-color: black;
+    background-image: linear-gradient(to right, #ffffff23 1px, transparent 1px), linear-gradient(to bottom, #ffffff23 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
 @font-face {
     font-family: 'MR_ROBOT';
     src: url('/MR_ROBOT.woff') format('truetype');

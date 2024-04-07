@@ -4,7 +4,6 @@ import { IoSend } from "react-icons/io5";
 import { useRobot } from "../hooks/useRobot";
 
 const ContenedorPrincipal = styled.main`
-    background-color: #000;
     padding: 5rem 0;
     display: flex;
     flex-direction: column;
@@ -18,6 +17,7 @@ const TituloPrincipal = styled.h1`
   font-size: 5rem;
   color: #E3E3E3;
   font-weight: 400;
+  filter: drop-shadow(0 0 100px #fff);
 
   @media screen and (max-width:480px) {
     font-size: 3.5rem;
@@ -75,10 +75,23 @@ const ContenedorChat = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  position: relative;
+  
 
   @media screen and (max-width:480px) {
     width: 90%;
   }
+
+  &::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(1px); /* Ajusta el valor de desenfoque según tu preferencia */
+  z-index: -1;
+}
 `
 
 const ImagenChat = styled.img`
