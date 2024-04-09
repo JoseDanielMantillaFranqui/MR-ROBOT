@@ -10,10 +10,13 @@ export const useRobot = () => {
     const scrollableDivRef = useRef(null)
     const [isEmptyPromptUsuario, setIsEmptyPromptUsuario] = useState(false)
     const [messages, setMessages] = useState([])
-
+    const apiAuthorization = import.meta.env.VITE_API_KEY
+    
     useEffect(() => {
-      console.log(import.meta.env.VITE_API_KEY)
+      console.log(apiAuthorization)
     },[])
+
+    
 
 
     useEffect(() => {
@@ -23,7 +26,7 @@ export const useRobot = () => {
         headers: {
           accept: 'application/json',
           'content-type': 'application/json',
-          authorization: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ijk5MjhmYzcxODAwMTc5NjRkMTA5MzM5YTY5YzkyNjgyIiwiY3JlYXRlZF9hdCI6IjIwMjQtMDItMDZUMTY6NDA6MDYuMzE4ODIzIn0.Vcags2jzroy3jualnOz0pLCjTTTrB76PHxkqA1PbuMQ'
+          authorization: apiAuthorization
         },
         body: JSON.stringify({
           beam_size: 1,
@@ -57,7 +60,7 @@ export const useRobot = () => {
         headers: {
           accept: 'application/json',
           'content-type': 'application/json',
-          authorization: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Ijk5MjhmYzcxODAwMTc5NjRkMTA5MzM5YTY5YzkyNjgyIiwiY3JlYXRlZF9hdCI6IjIwMjQtMDItMDZUMTY6NDA6MDYuMzE4ODIzIn0.Vcags2jzroy3jualnOz0pLCjTTTrB76PHxkqA1PbuMQ'
+          authorization: apiAuthorization
         }
       };
 
