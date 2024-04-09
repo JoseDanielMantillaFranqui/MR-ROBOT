@@ -12,6 +12,11 @@ export const useRobot = () => {
     const [messages, setMessages] = useState([])
 
     useEffect(() => {
+      console.log(import.meta.env.VITE_API_KEY)
+    },[])
+
+
+    useEffect(() => {
       
       const options = {
         method: 'POST',
