@@ -11,13 +11,6 @@ export const useRobot = () => {
     const [isEmptyPromptUsuario, setIsEmptyPromptUsuario] = useState(false)
     const [messages, setMessages] = useState([])
     const apiAuthorization = import.meta.env.VITE_API_KEY
-    
-    useEffect(() => {
-      console.log(apiAuthorization)
-    },[])
-
-    
-
 
     useEffect(() => {
       
