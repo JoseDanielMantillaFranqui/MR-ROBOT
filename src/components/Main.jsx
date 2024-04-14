@@ -10,6 +10,7 @@ const ContenedorPrincipal = styled.main`
     justify-content: center;
     align-items:center;
     gap:50px;
+    width: 100%;
 `
 
 const TituloPrincipal = styled.h1`
@@ -189,6 +190,7 @@ const Main = () => {
     const {
         respuesta,
         promptUsuario,
+        loadingResponse,
         textareaChatRef,
         scrollableDivRef,
         isEmptyPromptUsuario,
@@ -196,6 +198,7 @@ const Main = () => {
         handleInputPromptUser,
         handleSubmitGetResponse
     } = useRobot()
+
 
     return <ContenedorPrincipal>
     <TituloPrincipal>MR ROBOT</TituloPrincipal>
@@ -211,7 +214,7 @@ const Main = () => {
       </ContenedorMensajes>
       <FormularioChat onSubmit={handleSubmitGetResponse}>
         <InputPrompt placeholder="Escribe algo para preguntar" ref={textareaChatRef} cols='1' rows='1' value={promptUsuario} onChange={handleInputPromptUser} />
-        <BotonObtenerRespuesta type="submit" propbackground={isEmptyPromptUsuario.toString()}>{ (respuesta.status === 'IN_QUEUE' || respuesta.status === 'IN_PROGRESS') ? <CircularProgress style={{ color: '#000'}} size={15} /> : <IconoEnviar propcolor={isEmptyPromptUsuario.toString()} /> }</BotonObtenerRespuesta>
+        <BotonObtenerRespuesta type="submit" propbackground={isEmptyPromptUsuario.toString()}>{ (loadingResponse === true) ? <CircularProgress style={{ color: '#000'}} size={15} /> : <IconoEnviar propcolor={isEmptyPromptUsuario.toString()} /> }</BotonObtenerRespuesta>
       </FormularioChat>     
     </ContenedorChat>
 </ContenedorPrincipal>

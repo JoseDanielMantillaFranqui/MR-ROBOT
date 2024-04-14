@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 
 export const useRobot = () => {
-    const [generatedContent, setGeneratedContent] = useState({});
     const [respuesta, setRespuesta] = useState({})
+    const [loadingResponse, setLoadingResponse] = useState(false)
     const [obtenerRespuesta, setObtenerRespuesta] = useState(false)
     const [promptUsuario, setPromptUsuario] = useState('')
-    const [obteniendoRespuestaIntervalo, setObteniendoRespuestaIntervalo] = useState()
     const textareaChatRef = useRef(null)
     const scrollableDivRef = useRef(null)
     const [isEmptyPromptUsuario, setIsEmptyPromptUsuario] = useState(false)
@@ -14,86 +13,65 @@ export const useRobot = () => {
 
     useEffect(() => {
       
+      const url = 'https://chat-gpt26.p.rapidapi.com/';
       const options = {
         method: 'POST',
         headers: {
-          accept: 'application/json',
-          'content-type': 'application/json',
-          authorization: apiAuthorization
+          'Content-Type': 'application/json',
+          'X-RapidAPI-Key': apiAuthorization,
+          'X-RapidAPI-Host': 'chat-gpt26.p.rapidapi.com'
         },
-        body: JSON.stringify({
-          beam_size: 1,
-          max_length: 256,
-          prompt: promptUsuario,
-          repetition_penalty: 1.2,
-          system_prompt: 'Tú eres Elliot Alderson, sabes un poco de todo pero sobretodo de tecnología. Siempre respondes en español.',
-          temp: 0.98,
-          top_k: 40,
-          top_p: 0.9
+        body:JSON.stringify ({
+          model: 'gpt-3.5-turbo',
+          messages: [
+            {
+              role: 'user',
+              content: promptUsuario
+            }
+          ]
         })
       };
 
       const fetchingData = async () => {
-        const data =  await fetch('https://api.monsterapi.ai/v1/generate/llama2-7b-chat', options);
+      try {
+        setLoadingResponse(true)
+        const data =  await fetch(url, options);
         const json = await data.json();
-        setGeneratedContent(json)
+        if (json) {
+          setRespuesta(json)
+          setLoadingResponse(false)
+        }      
       }
 
+      catch (error) {
+        console.error(error);
+      }
+    }
+
       if (obtenerRespuesta === true) {
-        fetchingData()
-        setRespuesta({status: 'IN_QUEUE'})
+        fetchingData()    
       }
 
     }, [obtenerRespuesta]);
 
-    useEffect(() => {
-
-      const options = {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          'content-type': 'application/json',
-          authorization: apiAuthorization
-        }
-      };
-
-      const fetchingData = async () => {
-        const data = await fetch(generatedContent.status_url, options);
-        const data2JSON = await data.json();
-        return data2JSON
-      }
-
-
-     
-      if (obtenerRespuesta === true && generatedContent?.status_url) {
-        const fetchDataInterval = setInterval(() => {
-            const setearResIA = async () => {
-            const newRespuesta = await fetchingData()
-            setRespuesta(newRespuesta)
-      }
-
-      setearResIA()
-        }, 3000)
-
-        setObteniendoRespuestaIntervalo(fetchDataInterval)
-      }
-
-    }, [generatedContent])
 
     useEffect(() => {
-      if (respuesta.status === 'COMPLETED') {
+      
         setObtenerRespuesta(false)
-        clearInterval(obteniendoRespuestaIntervalo)
 
-        const newIAMessage = {
+      if (respuesta?.choices) {
+          const newIAMessage = {
           user: `MR. ROBOT`,
-          message: respuesta.result.text
+          message: respuesta.choices[0].message.content
         }
 
         setMessages([...messages, newIAMessage])
         setPromptUsuario('')
         setIsEmptyPromptUsuario(false)
       }
+
+
+      
     },[respuesta])
 
     useEffect(() => {
@@ -107,7 +85,7 @@ export const useRobot = () => {
       e.preventDefault()
 
 
-      if (isEmptyPromptUsuario === false || respuesta.status === 'IN_QUEUE' || respuesta.status === 'IN_PROGRESS') return;
+      if (isEmptyPromptUsuario === false || loadingResponse === true) return;
       const newUserMessage = {
         user: 'Tú',
         message: promptUsuario
@@ -128,6 +106,7 @@ export const useRobot = () => {
     return {
         respuesta,
         promptUsuario,
+        loadingResponse,
         textareaChatRef,
         scrollableDivRef,
         isEmptyPromptUsuario,
