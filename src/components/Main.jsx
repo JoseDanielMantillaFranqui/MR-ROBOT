@@ -127,6 +127,27 @@ const ContenedorMensajes = styled.div`
   max-height: 500px;
   overflow-y: auto;
   overflow-x: hidden;
+
+  /* width */
+&::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 10px;
+}
+
+/* Track */
+&::-webkit-scrollbar-track {
+  background: #282828;
+}
+
+/* Handle */
+&::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+&::-webkit-scrollbar-thumb:hover {
+  background: #fffdfd;
+}
 `
 
 const MensajeUsuario = styled.div`
