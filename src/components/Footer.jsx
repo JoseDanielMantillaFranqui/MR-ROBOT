@@ -17,6 +17,10 @@ const LinkPortafolio = styled.a`
     @media screen and (max-width:480px) {
         width: 70%;
     }
+
+    @media screen and (min-width: 481px) and (max-width: 900px) {
+        width: 40%;
+    }
 `
 
 const LogoFooter = styled.img`

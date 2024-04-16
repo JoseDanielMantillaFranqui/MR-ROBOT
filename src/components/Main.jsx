@@ -2,6 +2,7 @@ import styled from "styled-components";
 import CircularProgress from '@mui/material/CircularProgress';
 import { IoSend } from "react-icons/io5";
 import { useRobot } from "../hooks/useRobot";
+import { useEffect, useState } from "react";
 
 const ContenedorPrincipal = styled.main`
     padding: 5rem 0;
@@ -26,23 +27,34 @@ const TituloPrincipal = styled.h1`
 `
 
 const BotonObtenerRespuesta = styled.button`
-  font-size: 1.35rem;
-  padding: 1rem;
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.3rem;
+  padding: 0.3rem;
   border-bottom-right-radius: 30px;
   background-color: #E3E3E3;
-  color: black;
   font-family: Arial, Helvetica, sans-serif;
   font-style: italic;
   cursor: ${props => props.propbackground === 'true' ? 'pointer' : 'default' };
   border: none;
   align-self: normal;
 
-  &:active {
+  &:hover {
     background-color: ${props => props.propbackground === 'true' ? '#1d1d1d' : '#E3E3E3'};
   }
 
   @media screen and (max-width:480px) {
-    font-size:0.932rem;
+    font-size:1.5rem;
+  }
+
+  @media screen and (min-width:481px) and (max-width:900px) {
+    font-size: 2rem;
+  }
+
+  @media screen and (min-width:901px) and (max-width:1600px) {
+    width: 10%;
   }
 `
 
@@ -56,18 +68,25 @@ const InputPrompt = styled.textarea`
   font-style: italic;
   width: 85%;
   border:none;
-
   resize: none;
   outline:none;
+  overflow: hidden;
 
-  @media screen and (max-width:480px) {
-    font-size:1rem;
+  @media screen and (max-width:369px) {
+    font-size: 1rem;
+  }
+
+  @media screen and (min-width: 370px) and (max-width:480px) {
+    font-size:1.3rem;
+  }
+  @media screen and (min-width:901px) and (max-width:1600px) {
+    width: 90%;
   }
 `
 
 const ContenedorChat = styled.div`
   width: 60%;
-  min-height: 400px;
+  min-height: 380px;
   height: max-content;
   border: 2px solid #E3E3E3;
   border-bottom: none;
@@ -99,22 +118,23 @@ const ImagenChat = styled.img`
 width: 50%;
 align-self: center;
 
+
 @media screen and (max-width:480px) {
   width: 90%;
-  margin-bottom: 2rem;
+  margin: 1rem 0;
+}
+
+@media screen and (min-width: 481px) and (max-width: 900px) {
+  width: 70%;
 }
 `
 
 const FormularioChat = styled.form`
-  width: 102%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   height: max-content;
-
-  @media screen and (min-width:901px) and (max-width:1600px) {
-    width: 111.5%;
-  }
 `
 
 const ContenedorMensajes = styled.div`
@@ -122,6 +142,7 @@ const ContenedorMensajes = styled.div`
   height: max-content;
   display: flex;
   flex-direction: column;
+  border-radius: 32px;
   gap: 10px;
   padding: 1rem;
   max-height: 500px;
@@ -201,8 +222,19 @@ const ImgMensajeIA = styled.img`
 const IconoEnviar = styled(IoSend)`
   color: ${props => props.propcolor === 'true' ? '#000' : '#00000087' };
 
-  ${BotonObtenerRespuesta}:active & {
+  ${BotonObtenerRespuesta}:hover & {
     color: ${props => props.propcolor === 'true' ? '#fff' : '#00000087'};
+  }
+`
+
+const IconoCargando = styled(CircularProgress)`
+
+${BotonObtenerRespuesta} &{
+  color: black;
+}
+
+  ${BotonObtenerRespuesta}:hover & {
+    color: white
   }
 `
 
@@ -219,21 +251,57 @@ const Main = () => {
     handleSubmitGetResponse
 } = useRobot()
 
+const [dataURL, setDataURL] = useState('');
+
+useEffect(() => {
+    const canvas = document.getElementById('canv');
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width = document.body.offsetWidth;
+    const h = canvas.height = document.body.offsetHeight;
+    const cols = Math.floor(w / 20) + 1;
+    const ypos = Array(cols).fill(0);
+    const characters = '0123456789'; // Solo números
+
+    function matrix() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.09)';
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.fillStyle = '#e8efe825';
+        ctx.font = '15pt monospace';
+
+        ypos.forEach((y, ind) => {
+            const text = characters[Math.floor(Math.random() * characters.length)];
+            const x = ind * 20;
+            ctx.fillText(text, x, y);
+            if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
+            else ypos[ind] = y + 20;
+        });
+
+        const dataURL = canvas.toDataURL();
+        setDataURL(dataURL);
+    }
+
+    const intervalId = setInterval(matrix, 100);
+
+    return () => clearInterval(intervalId);
+}, []);
+
 return <ContenedorPrincipal>
+<canvas id="canv" style={{ width: 200, height: 200, display: 'none'}}></canvas>
 <TituloPrincipal>MR ROBOT</TituloPrincipal>
-<ContenedorChat>
-  <ContenedorMensajes ref={scrollableDivRef}>
+<ContenedorChat style={{background: `url(${dataURL})`}}>
+  <ContenedorMensajes ref={scrollableDivRef}  >
     {
       messages[0]?.user ? messages.map((message, index) => {
         return message.user === 'Tú' ? <MensajeUsuario key={index}><TituloMensaje>{message.user}</TituloMensaje>{message.message}</MensajeUsuario> : <MensajeIA key={index}><TituloMensaje><ImgMensajeIA src="icon_mr_robot.svg"/></TituloMensaje>{message.message}</MensajeIA>
       })
       :
-      <ImagenChat src="img_mr_robot.svg" alt="Imagen de Mr Robot presentándose"/>
+      <ImagenChat src='/img_mr_robot.svg' />
     }
   </ContenedorMensajes>
   <FormularioChat onSubmit={handleSubmitGetResponse}>
     <InputPrompt placeholder="Escribe algo para preguntar" ref={textareaChatRef} cols='1' rows='1' value={promptUsuario} onChange={handleInputPromptUser} />
-    <BotonObtenerRespuesta type="submit" propbackground={isEmptyPromptUsuario.toString()}>{ (respuesta.status === 'IN_QUEUE' || respuesta.status === 'IN_PROGRESS') ? <CircularProgress style={{ color: '#000'}} size={15} /> : <IconoEnviar propcolor={isEmptyPromptUsuario.toString()} /> }</BotonObtenerRespuesta>
+    <BotonObtenerRespuesta type="submit" propbackground={isEmptyPromptUsuario.toString()}>{ (respuesta.status === 'IN_QUEUE' || respuesta.status === 'IN_PROGRESS') ? <IconoCargando /> : <IconoEnviar propcolor={isEmptyPromptUsuario.toString()} /> }</BotonObtenerRespuesta>
   </FormularioChat>     
 </ContenedorChat>
 </ContenedorPrincipal>

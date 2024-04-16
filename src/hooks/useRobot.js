@@ -116,9 +116,15 @@ export const useRobot = () => {
       setMessages([...messages, newUserMessage])
     }
 
+    const validatePromptUser = (value) => {
+      const isValid = ((value.length >  0) && (!(value.trim() === ''))) ? true : false 
+
+      return isValid
+    }
+
     const handleInputPromptUser = (e) => {
       setPromptUsuario(e.target.value)
-      e.target.value.length > 0 ? setIsEmptyPromptUsuario(true) : setIsEmptyPromptUsuario(false)
+      setIsEmptyPromptUsuario(validatePromptUser(e.target.value))
       if (textareaChatRef.current.scrollHeight > 60) {
         textareaChatRef.current.style.height = 'auto';
         textareaChatRef.current.style.height = `${textareaChatRef.current.scrollHeight}px`;
