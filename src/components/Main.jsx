@@ -102,16 +102,6 @@ const ContenedorChat = styled.div`
     width: 90%;
   }
 
-  &::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(1px); /* Ajusta el valor de desenfoque según tu preferencia */
-  z-index: -1;
-}
 `
 
 const ImagenChat = styled.img`
@@ -260,7 +250,7 @@ useEffect(() => {
     const h = canvas.height = document.body.offsetHeight;
     const cols = Math.floor(w / 20) + 1;
     const ypos = Array(cols).fill(0);
-    const characters = '0123456789'; // Solo números
+    const characters = '01'; // Solo números
 
     function matrix() {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.09)';
@@ -287,7 +277,7 @@ useEffect(() => {
 }, []);
 
 return <ContenedorPrincipal>
-<canvas id="canv" style={{ width: 200, height: 200, display: 'none'}}></canvas>
+<canvas id="canv" style={{ width: 100, height: 100, display: 'none'}}></canvas>
 <TituloPrincipal>MR ROBOT</TituloPrincipal>
 <ContenedorChat style={{background: `url(${dataURL})`}}>
   <ContenedorMensajes ref={scrollableDivRef}  >
