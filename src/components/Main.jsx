@@ -256,7 +256,7 @@ useEffect(() => {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.09)';
         ctx.fillRect(0, 0, w, h);
 
-        ctx.fillStyle = '#e8efe825';
+        ctx.fillStyle = '#efe8e823';
         ctx.font = '15pt monospace';
 
         ypos.forEach((y, ind) => {
@@ -286,7 +286,7 @@ return <ContenedorPrincipal>
         return message.user === 'Tú' ? <MensajeUsuario key={index}><TituloMensaje>{message.user}</TituloMensaje>{message.message}</MensajeUsuario> : <MensajeIA key={index}><TituloMensaje><ImgMensajeIA src="icon_mr_robot.svg"/></TituloMensaje>{message.message}</MensajeIA>
       })
       :
-      <ImagenChat src='/img_mr_robot.svg' />
+      <ImagenChat src='/img_mr_robot.svg' alt="Img Presentación Mr Robot" />
     }
   </ContenedorMensajes>
   <FormularioChat onSubmit={handleSubmitGetResponse}>

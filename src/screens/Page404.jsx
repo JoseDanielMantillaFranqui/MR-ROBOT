@@ -21,7 +21,8 @@ const TituloPrincipal = styled.h1`
     padding: 1rem;
     background-color:#ffffff29;
     border-radius: 50px;
-
+    backdrop-filter: blur(3px);
+    -webkit-text-stroke: 1px #101010;
 `
 
 const Enunciado = styled.p`
@@ -33,6 +34,8 @@ const Enunciado = styled.p`
     padding: 0.8rem;
     background-color:#ffffff29;
     border-radius: 50px;
+    backdrop-filter: blur(3px);
+    -webkit-text-stroke: 0.5px #000000;
 `
 
 const Page404 = () => {
