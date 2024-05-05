@@ -96,10 +96,14 @@ const ContenedorChat = styled.div`
   align-items: center;
   justify-content: flex-end;
   position: relative;
-  
+  background: url('https://64.media.tumblr.com/55e02dda2e448752f7f09b3f99889725/8f6427e8419a0bf9-91/s400x600/c40615db97de26bc75edb40ade8da202d4da566c.gifv');
+  background-size: cover;
+  background-color: #000000e3;
+  background-blend-mode: soft-light;  
 
   @media screen and (max-width:480px) {
     width: 90%;
+    background-color: #000000d4;
   }
 
 `
@@ -243,45 +247,10 @@ const Main = () => {
     handleSubmitGetResponse
 } = useRobot()
 
-const [dataURL, setDataURL] = useState('');
-
-useEffect(() => {
-    const canvas = document.getElementById('canv');
-    const ctx = canvas.getContext('2d');
-    const w = canvas.width = document.body.offsetWidth;
-    const h = canvas.height = document.body.offsetHeight;
-    const cols = Math.floor(w / 20) + 1;
-    const ypos = Array(cols).fill(0);
-    const characters = '01'; // Solo números
-
-    function matrix() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.09)';
-        ctx.fillRect(0, 0, w, h);
-
-        ctx.fillStyle = '#efe8e823';
-        ctx.font = '15pt monospace';
-
-        ypos.forEach((y, ind) => {
-            const text = characters[Math.floor(Math.random() * characters.length)];
-            const x = ind * 20;
-            ctx.fillText(text, x, y);
-            if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
-            else ypos[ind] = y + 20;
-        });
-
-        const dataURL = canvas.toDataURL();
-        setDataURL(dataURL);
-    }
-
-    const intervalId = setInterval(matrix, 100);
-
-    return () => clearInterval(intervalId);
-}, []);
-
 return <ContenedorPrincipal>
 <canvas id="canv" style={{ width: 100, height: 100, display: 'none'}}></canvas>
 <TituloPrincipal>MR ROBOT</TituloPrincipal>
-<ContenedorChat style={{ background: `url(${dataURL})` }}>
+<ContenedorChat >
   <ContenedorMensajes ref={scrollableDivRef}  >
     {
       messages[0]?.user ? messages.map((message, index) => {
