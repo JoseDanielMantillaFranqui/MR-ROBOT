@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 
 export const useRobot = () => {
-    const [generatedContent, setGeneratedContent] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
     const [respuesta, setRespuesta] = useState({})
     const [obtenerRespuesta, setObtenerRespuesta] = useState(false)
     const [promptUsuario, setPromptUsuario] = useState('')
-    const [obteniendoRespuestaIntervalo, setObteniendoRespuestaIntervalo] = useState()
     const textareaChatRef = useRef(null)
     const scrollableDivRef = useRef(null)
     const [isEmptyPromptUsuario, setIsEmptyPromptUsuario] = useState(false)
@@ -14,86 +13,51 @@ export const useRobot = () => {
 
     useEffect(() => {
       
-      const options = {
-        method: 'POST',
-        headers: {
-          accept: 'application/json',
-          'content-type': 'application/json',
-          authorization: apiAuthorization
-        },
-        body: JSON.stringify({
-          beam_size: 1,
-          max_length: 256,
-          prompt: promptUsuario,
-          repetition_penalty: 1.2,
-          system_prompt: 'Tú eres Elliot Alderson, sabes un poco de todo pero sobretodo de tecnología. Siempre respondes en español.',
-          temp: 0.98,
-          top_k: 40,
-          top_p: 0.9
-        })
-      };
 
-      const fetchingData = async () => {
-        const data =  await fetch('https://api.monsterapi.ai/v1/generate/llama2-7b-chat', options);
-        const json = await data.json();
-        setGeneratedContent(json)
-      }
+
 
       if (obtenerRespuesta === true) {
-        fetchingData()
-        setRespuesta({status: 'IN_QUEUE'})
+
+
+        const obtenerResultado = async () => {
+          
+        setIsLoading(true)
+        const response = await fetch('https://api.deepinfra.com/v1/openai/chat/completions', {
+          method: 'POST',
+          body: JSON.stringify({
+              model: "meta-llama/Llama-2-70b-chat-hf",
+              messages: [{role: "user", content: promptUsuario}],
+          }),
+          headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${apiAuthorization}`,
+          }
+        });
+
+        const data = await response.json()
+        console.log(data)
+        setRespuesta(data.choices[0].message.content)
+        respuesta === true ? setIsLoading(false) : setIsLoading(true)
+        }
+
+        obtenerResultado()
       }
 
     }, [obtenerRespuesta]);
 
     useEffect(() => {
-
-      const options = {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          'content-type': 'application/json',
-          authorization: apiAuthorization
-        }
-      };
-
-      const fetchingData = async () => {
-        const data = await fetch(generatedContent.status_url, options);
-        const data2JSON = await data.json();
-        return data2JSON
-      }
-
-
-     
-      if (obtenerRespuesta === true && generatedContent?.status_url) {
-        const fetchDataInterval = setInterval(() => {
-            const setearResIA = async () => {
-            const newRespuesta = await fetchingData()
-            setRespuesta(newRespuesta)
-      }
-
-      setearResIA()
-        }, 3000)
-
-        setObteniendoRespuestaIntervalo(fetchDataInterval)
-      }
-
-    }, [generatedContent])
-
-    useEffect(() => {
-      if (respuesta.status === 'COMPLETED') {
-        setObtenerRespuesta(false)
-        clearInterval(obteniendoRespuestaIntervalo)
+        if (obtenerRespuesta === false) return
 
         const newIAMessage = {
-          user: `MR. ROBOT`,
-          message: respuesta.result.text
+          user: 'MR. ROBOT',
+          message: respuesta
         }
-
+        setObtenerRespuesta(false)
         setMessages([...messages, newIAMessage])
         setPromptUsuario('')
+        setIsLoading(false)
         setIsEmptyPromptUsuario(false)
-      }
+      
     },[respuesta])
 
     useEffect(() => {
@@ -101,13 +65,14 @@ export const useRobot = () => {
         const scrollableDiv = scrollableDivRef.current;
         scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
       }
+      console.log(messages)
     },[messages])
 
     const handleSubmitGetResponse = (e) => {
       e.preventDefault()
 
+      if ((isEmptyPromptUsuario === false) || (isLoading === true)) return
 
-      if (isEmptyPromptUsuario === false || respuesta.status === 'IN_QUEUE' || respuesta.status === 'IN_PROGRESS') return;
       const newUserMessage = {
         user: 'Tú',
         message: promptUsuario
@@ -132,7 +97,7 @@ export const useRobot = () => {
     }
 
     return {
-        respuesta,
+        isLoading,
         promptUsuario,
         textareaChatRef,
         scrollableDivRef,

@@ -176,6 +176,7 @@ const MensajeUsuario = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  backdrop-filter: blur(1px);
   
 
   @media screen and (max-width:480px) {
@@ -195,6 +196,7 @@ const MensajeIA = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  backdrop-filter: blur(2px);
 
   @media screen and (max-width:480px) {
     max-width: 75%;
@@ -231,7 +233,7 @@ ${BotonObtenerRespuesta} &{
 const Main = () => {
 
   const {
-    respuesta,
+    isLoading,
     promptUsuario,
     textareaChatRef,
     scrollableDivRef,
@@ -279,7 +281,7 @@ useEffect(() => {
 return <ContenedorPrincipal>
 <canvas id="canv" style={{ width: 100, height: 100, display: 'none'}}></canvas>
 <TituloPrincipal>MR ROBOT</TituloPrincipal>
-<ContenedorChat style={{background: `url(${dataURL})`}}>
+<ContenedorChat style={{ background: `url(${dataURL})` }}>
   <ContenedorMensajes ref={scrollableDivRef}  >
     {
       messages[0]?.user ? messages.map((message, index) => {
@@ -291,7 +293,7 @@ return <ContenedorPrincipal>
   </ContenedorMensajes>
   <FormularioChat onSubmit={handleSubmitGetResponse}>
     <InputPrompt placeholder="Escribe algo para preguntar" ref={textareaChatRef} cols='1' rows='1' value={promptUsuario} onChange={handleInputPromptUser} />
-    <BotonObtenerRespuesta type="submit" propbackground={isEmptyPromptUsuario.toString()}>{ (respuesta.status === 'IN_QUEUE' || respuesta.status === 'IN_PROGRESS') ? <IconoCargando /> : <IconoEnviar propcolor={isEmptyPromptUsuario.toString()} /> }</BotonObtenerRespuesta>
+    <BotonObtenerRespuesta type="submit" propbackground={isEmptyPromptUsuario.toString()}>{ (isLoading === true) ? <IconoCargando /> : <IconoEnviar propcolor={isEmptyPromptUsuario.toString()} /> }</BotonObtenerRespuesta>
   </FormularioChat>     
 </ContenedorChat>
 </ContenedorPrincipal>
