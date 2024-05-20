@@ -35,7 +35,6 @@ export const useRobot = () => {
         });
 
         const data = await response.json()
-        console.log(data)
         setRespuesta(data.choices[0].message.content)
         respuesta === true ? setIsLoading(false) : setIsLoading(true)
         }
@@ -50,7 +49,8 @@ export const useRobot = () => {
 
         const newIAMessage = {
           user: 'MR. ROBOT',
-          message: respuesta
+          message: respuesta,
+          isCopied: false
         }
         setObtenerRespuesta(false)
         setMessages([...messages, newIAMessage])
@@ -61,11 +61,32 @@ export const useRobot = () => {
     },[respuesta])
 
     useEffect(() => {
+
       if (scrollableDivRef.current) {
         const scrollableDiv = scrollableDivRef.current;
         scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
       }
-      console.log(messages)
+
+      const allMessagesNotCopied = messages.every(message => message?.isCopied ? message.isCopied === false : true);
+
+      if (allMessagesNotCopied === false) {
+        const disabledCopied = messages.map((message, index) => {
+        if (message.isCopied === true) {
+          return { ...message, isCopied: false }
+        }
+
+        return message
+      })
+      const timer = setTimeout(() => {
+        setMessages(disabledCopied)
+      }, 4000) 
+
+
+      return () => clearTimeout(timer)
+      }
+
+
+
     },[messages])
 
     const handleSubmitGetResponse = (e) => {
@@ -96,6 +117,26 @@ export const useRobot = () => {
       }
     }
 
+    const handleCopiarMensajeIA = (textoIA) => {
+      var elementoTemporal = document.createElement("textarea")
+      elementoTemporal.value = textoIA
+      document.body.appendChild(elementoTemporal)
+      elementoTemporal.select()
+      document.execCommand("copy")
+      document.body.removeChild(elementoTemporal)
+      
+      const enabledCopied = messages.map((message, index) => {
+        if ((message.isCopied === false) && message.message === textoIA) {
+          return { ...message, isCopied: true } 
+        }
+
+        return message
+      })
+
+      setMessages(enabledCopied)
+  }
+
+
     return {
         isLoading,
         promptUsuario,
@@ -104,6 +145,7 @@ export const useRobot = () => {
         isEmptyPromptUsuario,
         messages,
         handleInputPromptUser,
-        handleSubmitGetResponse
+        handleSubmitGetResponse,
+        handleCopiarMensajeIA,
     }
 }

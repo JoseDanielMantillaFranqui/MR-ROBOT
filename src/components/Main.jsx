@@ -3,6 +3,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { IoSend } from "react-icons/io5";
 import { useRobot } from "../hooks/useRobot";
 import { useEffect, useState } from "react";
+import { Button } from "@mui/material";
+import { FaCopy } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
 
 const ContenedorPrincipal = styled.main`
     padding: 5rem 0;
@@ -234,6 +237,23 @@ ${BotonObtenerRespuesta} &{
   }
 `
 
+const BotonCopiar = styled(Button)`
+  && {
+    width: 50px;
+    align-self: flex-end;
+    color: ${props => props.iscopied === 'true' ? '#5aab0e' : '#fff'};
+    border-color: ${props => props.iscopied === 'true' ? '#5aab0e' : '#fff'};
+  }
+
+  &&:hover {
+    border-color: ${props => props.iscopied === 'true' ? '#5aab0e' : '#fff'};
+  }
+`
+
+const IconoCopiar = styled(FaCopy)`
+  
+`
+
 const Main = () => {
 
   const {
@@ -244,17 +264,17 @@ const Main = () => {
     isEmptyPromptUsuario,
     messages,
     handleInputPromptUser,
-    handleSubmitGetResponse
+    handleSubmitGetResponse,
+    handleCopiarMensajeIA,
 } = useRobot()
 
 return <ContenedorPrincipal>
-<canvas id="canv" style={{ width: 100, height: 100, display: 'none'}}></canvas>
 <TituloPrincipal>MR ROBOT</TituloPrincipal>
 <ContenedorChat >
   <ContenedorMensajes ref={scrollableDivRef}  >
     {
       messages[0]?.user ? messages.map((message, index) => {
-        return message.user === 'Tú' ? <MensajeUsuario key={index}><TituloMensaje>{message.user}</TituloMensaje>{message.message}</MensajeUsuario> : <MensajeIA key={index}><TituloMensaje><ImgMensajeIA src="icon_mr_robot.svg"/></TituloMensaje>{message.message}</MensajeIA>
+        return message.user === 'Tú' ? <MensajeUsuario key={index}><TituloMensaje>{message.user}</TituloMensaje>{message.message}</MensajeUsuario> : <MensajeIA key={index}><TituloMensaje><ImgMensajeIA src="icon_mr_robot.svg"/></TituloMensaje>{message.message}<BotonCopiar onClick={() => { handleCopiarMensajeIA(message.message)} } variant="outlined" iscopied={message.isCopied.toString()} >{ message.isCopied === true ? <FaCheckCircle /> : <FaCopy /> }</BotonCopiar></MensajeIA>
       })
       :
       <ImagenChat src='/img_mr_robot.svg' alt="Img Presentación Mr Robot" />
