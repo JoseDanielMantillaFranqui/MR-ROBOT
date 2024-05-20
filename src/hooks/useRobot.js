@@ -5,6 +5,7 @@ export const useRobot = () => {
     const [respuesta, setRespuesta] = useState({})
     const [obtenerRespuesta, setObtenerRespuesta] = useState(false)
     const [promptUsuario, setPromptUsuario] = useState('')
+    const [messagesPreviousLength, setMessagesPreviousLength] = useState(0)
     const textareaChatRef = useRef(null)
     const scrollableDivRef = useRef(null)
     const [isEmptyPromptUsuario, setIsEmptyPromptUsuario] = useState(false)
@@ -57,17 +58,19 @@ export const useRobot = () => {
         setPromptUsuario('')
         setIsLoading(false)
         setIsEmptyPromptUsuario(false)
+        
       
     },[respuesta])
 
     useEffect(() => {
+      const allMessagesNotCopied = messages.every(message => message?.isCopied ? message.isCopied === false : true);
 
-      if (scrollableDivRef.current) {
+      if ((scrollableDivRef.current) && (messages.length > messagesPreviousLength)) {
         const scrollableDiv = scrollableDivRef.current;
         scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
       }
 
-      const allMessagesNotCopied = messages.every(message => message?.isCopied ? message.isCopied === false : true);
+      
 
       if (allMessagesNotCopied === false) {
         const disabledCopied = messages.map((message, index) => {
@@ -85,7 +88,7 @@ export const useRobot = () => {
       return () => clearTimeout(timer)
       }
 
-
+      setMessagesPreviousLength(messages.length)
 
     },[messages])
 
