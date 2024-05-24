@@ -176,14 +176,29 @@ const MensajeUsuario = styled.div`
   font-size: 1rem;
   font-style: italic;
   align-self:flex-end;
-  text-align: end;
+  text-align: start;
   border-radius: 20px;
   font-family: Arial, Helvetica, sans-serif;
   background-color: #ffffff2f;
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 0.5rem;
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(2px);
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 17px; /* Ajusta esto según sea necesario */
+    right: -11px; /* Ajusta esto según sea necesario para que la cola se alinee con el borde del mensaje */
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-left: 11px solid #ffffff2f; /* El mismo color de fondo del mensaje */
+    border-bottom: 10px solid transparent;
+    z-index: -1;
+    backdrop-filter: blur(2px);
+  }
   
 
   @media screen and (max-width:480px) {
@@ -195,7 +210,7 @@ const MensajeIA = styled.div`
   width: max-content;
   font-size:1rem;
   color: white;
-  padding: .5rem;
+  padding: 1rem;
   border-radius: 20px;
   font-family: Arial, Helvetica, sans-serif;
   font-style: italic;
@@ -204,6 +219,19 @@ const MensajeIA = styled.div`
   flex-direction: column;
   gap: 1rem;
   backdrop-filter: blur(2px);
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 17px; /* Ajusta esto según sea necesario */
+    left: -11px; /* Ajusta esto según sea necesario para que la cola se alinee con el borde del mensaje */
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-right: 11px solid #ffffff2f; /* El mismo color de fondo del mensaje */
+    border-bottom: 10px solid transparent;
+    backdrop-filter: blur(2px);
+  }
 
   @media screen and (max-width:480px) {
     max-width: 75%;
@@ -216,6 +244,7 @@ const TituloMensaje = styled.h1`
 
 const ImgMensajeIA = styled.img`
   width: 20%;
+  min-width: 60px;
 `
 
 const IconoEnviar = styled(IoSend)`
@@ -239,10 +268,10 @@ ${BotonObtenerRespuesta} &{
 
 const BotonCopiar = styled(Button)`
   && {
-    width: 50px;
+    min-width: 30px;
     align-self: flex-end;
     color: ${props => props.iscopied === 'true' ? '#5aab0e' : '#fff'};
-    border-color: ${props => props.iscopied === 'true' ? '#5aab0e' : '#fff'};
+    border-color: ${props => props.iscopied === 'true' ? '#5aab0e' : '#ffffff84'};
   }
 
   &&:hover {
