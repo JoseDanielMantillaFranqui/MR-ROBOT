@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import OpenAI from "openai";
 
 export const useRobot = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -12,25 +13,23 @@ export const useRobot = () => {
     const [messages, setMessages] = useState([]);
     const apiAuthorization = import.meta.env.VITE_API_KEY;
 
+    const openai = new OpenAI({
+        baseURL: 'https://api.deepinfra.com/v1/openai',
+        apiKey: apiAuthorization,
+        dangerouslyAllowBrowser: true
+    })
+
     useEffect(() => {
         if (!obtenerRespuesta) return;
 
         const obtenerResultado = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch('https://api.deepinfra.com/v1/openai/chat/completions', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        model: "meta-llama/Llama-2-70b-chat-hf",
-                        messages: [{ role: "user", content: promptUsuario }],
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        authorization: `Bearer ${apiAuthorization}`,
-                    },
-                });
-                const data = await response.json();
-                setRespuesta(data.choices[0].message.content);
+                const completion = await openai.chat.completions.create({
+                    messages: [{ role: "user", content: promptUsuario }],
+                    model: "meta-llama/Meta-Llama-3-70B-Instruct",
+                  });
+                setRespuesta(completion.choices[0].message.content);
             } catch (error) {
                 console.error("Error fetching response:", error);
             } finally {

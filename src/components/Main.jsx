@@ -230,7 +230,6 @@ const MensajeIA = styled.div`
     border-top: 10px solid transparent;
     border-right: 11px solid #ffffff2f; /* El mismo color de fondo del mensaje */
     border-bottom: 10px solid transparent;
-    backdrop-filter: blur(2px);
   }
 
   @media screen and (max-width:480px) {
