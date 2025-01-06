@@ -18,11 +18,47 @@ const ContenedorPrincipal = styled.main`
 `
 
 const TituloPrincipal = styled.h1`
-  font-family: "MR_ROBOT", sans-serif;
+  font-family: "Major Mono Display", serif;
   font-size: 5rem;
   color: #E3E3E3;
   font-weight: 400;
-  filter: drop-shadow(0 0 100px #fff);
+  animation: shadowAnimated 5s linear infinite;
+
+  @keyframes shadowAnimated {
+    0% {
+      filter: none;
+    }
+    10% {
+      filter: drop-shadow(0 0 20px #ffffff8c);
+    }
+    20% {
+      filter: drop-shadow(0 0 40px #ffffff8c);
+    }
+    30% {
+      filter: drop-shadow(0 0 60px #ffffff8c);
+    }
+    40% {
+      filter: drop-shadow(0 0 80px #fff);
+    }
+    50% {
+      filter: drop-shadow(0 0 100px #fff);
+    }
+    60% {
+      filter: drop-shadow(0 0 80px #fff);
+    }
+    70% {
+      filter: drop-shadow(0 0 60px #ffffff8c);
+    }
+    80% {
+      filter: drop-shadow(0 0 40px #ffffff8c);
+    }
+    90% {
+      filter: drop-shadow(0 0 20px #ffffff8c);
+    }
+    100% {
+      filter: none;
+    }
+  }
 
   @media screen and (max-width:480px) {
     font-size: 3.5rem;
