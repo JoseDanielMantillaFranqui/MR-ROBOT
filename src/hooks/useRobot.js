@@ -49,7 +49,7 @@ export const useRobot = () => {
             const chat = model.startChat({
               history: chatHistory,
               generationConfig: {
-                maxOutputTokens: 100,
+                maxOutputTokens: 500,
               },
             });
             
