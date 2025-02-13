@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export const useRobot = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -12,33 +12,67 @@ export const useRobot = () => {
     const [isEmptyPromptUsuario, setIsEmptyPromptUsuario] = useState(false);
     const [messages, setMessages] = useState([]);
     const apiAuthorization = import.meta.env.VITE_API_KEY;
+    const [historyMessagesUser, setHistoryMessagesUser] = useState([]);
+    const [historyMessagesIA, setHistoryMessagesIA] = useState([{ text: "Hola, soy Mr. Robot. ¿En qué puedo ayudarte?" }]);
 
-    const openai = new OpenAI({
-        baseURL: 'https://api.deepinfra.com/v1/openai',
-        apiKey: apiAuthorization,
-        dangerouslyAllowBrowser: true
-    })
+    const genAI = new GoogleGenerativeAI(apiAuthorization);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
 
     useEffect(() => {
         if (!obtenerRespuesta) return;
-
+      
         const obtenerResultado = async () => {
-            setIsLoading(true);
-            try {
-                const completion = await openai.chat.completions.create({
-                    messages: [{ role: "user", content: promptUsuario }],
-                    model: "meta-llama/Meta-Llama-3-70B-Instruct",
-                  });
-                setRespuesta(completion.choices[0].message.content);
-            } catch (error) {
-                console.error("Error fetching response:", error);
-            } finally {
-                setIsLoading(false);
-            }
+          // Aseguramos que el prompt no esté vacío
+          if (!promptUsuario.trim()) return;
+          
+          setIsLoading(true);
+          try {
+            // Construir el nuevo historial de usuario incluyendo el mensaje actual
+            const newHistoryMessagesUser = [
+              ...historyMessagesUser,
+              { text: promptUsuario }
+            ];
+            
+            // Construir el historial completo combinando usuario e IA
+            const chatHistory = [
+              {
+                role: "user",
+                parts: newHistoryMessagesUser, // Aseguramos que no esté vacío
+              },
+              {
+                role: "model",
+                parts: historyMessagesIA,
+              },
+            ];
+            
+            // Iniciamos el chat con el historial actualizado
+            const chat = model.startChat({
+              history: chatHistory,
+              generationConfig: {
+                maxOutputTokens: 100,
+              },
+            });
+            
+            const result = await chat.sendMessage(promptUsuario);
+            const response = await result.response;
+            const text = response.text();
+            
+            // Actualizamos la respuesta y el historial de la IA usando el texto obtenido
+            setRespuesta(text);
+            setHistoryMessagesIA(prev => [...prev, { text }]);
+            
+            // También actualizamos el historial de usuario para mantenerlo en el estado
+            setHistoryMessagesUser(newHistoryMessagesUser);
+          } catch (error) {
+            console.error("Error fetching response:", error);
+          } finally {
+            setIsLoading(false);
+          }
         };
-
+      
         obtenerResultado();
-    }, [obtenerRespuesta]);
+      }, [obtenerRespuesta]);
+      
 
     useEffect(() => {
         if (!obtenerRespuesta) return;
@@ -50,9 +84,9 @@ export const useRobot = () => {
         };
         setObtenerRespuesta(false);
         setMessages(prevMessages => [...prevMessages, newIAMessage]);
-        setPromptUsuario('');
         setIsLoading(false);
         setIsEmptyPromptUsuario(false);
+        setPromptUsuario('');
 
     }, [respuesta]);
 
