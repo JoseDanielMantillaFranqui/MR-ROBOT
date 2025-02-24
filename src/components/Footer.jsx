@@ -14,6 +14,16 @@ const LinkPortafolio = styled.a`
     display: grid;
     place-items: center;
 
+    &:hover {
+        transform: scale(1.1) translateY(-15px);
+        transition: all 0.3s ease;
+    }
+
+    &:active {
+        transform: scale(1.05) translateY(-10px);
+        transition: all 0.1s ease;
+    }
+
     @media screen and (max-width:480px) {
         width: 70%;
     }

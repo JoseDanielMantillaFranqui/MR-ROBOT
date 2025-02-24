@@ -2,7 +2,7 @@ import styled from "styled-components";
 import CircularProgress from '@mui/material/CircularProgress';
 import { IoSend } from "react-icons/io5";
 import { useRobot } from "../hooks/useRobot";
-import { useEffect, useState } from "react";
+import FormattedMessage from "../hooks/useFormat";
 import { Button } from "@mui/material";
 import { FaCopy } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
@@ -18,7 +18,8 @@ const ContenedorPrincipal = styled.main`
 `
 
 const TituloPrincipal = styled.h1`
-  font-family: "Major Mono Display", serif;
+  font-family: "Orbitron", serif;
+  text-shadow: 4px 4px 3px #505050df;
   font-size: 5rem;
   color: #E3E3E3;
   font-weight: 400;
@@ -53,7 +54,7 @@ const TituloPrincipal = styled.h1`
       filter: drop-shadow(0 0 40px #ffffff8c);
     }
     90% {
-      filter: drop-shadow(0 0 20px #ffffff8c);
+      filter: drop-shadow(0 0 20px #ffffff21);
     }
     100% {
       filter: none;
@@ -61,7 +62,7 @@ const TituloPrincipal = styled.h1`
   }
 
   @media screen and (max-width:480px) {
-    font-size: 3.5rem;
+    font-size: 3.3rem;
   }
 `
 
@@ -207,7 +208,7 @@ const ContenedorMensajes = styled.div`
 const MensajeUsuario = styled.div`
   width: max-content;
   max-width: 45%;
-  padding: .5rem .8rem .5rem .5rem;
+  padding: 1rem;
   color: white;
   font-size: 1rem;
   font-style: italic;
@@ -242,7 +243,7 @@ const MensajeUsuario = styled.div`
   }
 `
 const MensajeIA = styled.div`
-  max-width: 45%;
+  max-width: 65%;
   width: max-content;
   font-size:1rem;
   color: white;
@@ -333,12 +334,14 @@ const Main = () => {
 } = useRobot()
 
 return <ContenedorPrincipal>
-<TituloPrincipal>MR ROBOT</TituloPrincipal>
+<TituloPrincipal>MR. ROBOT</TituloPrincipal>
 <ContenedorChat >
   <ContenedorMensajes ref={scrollableDivRef}  >
     {
       messages[0]?.user ? messages.map((message, index) => {
-        return message.user === 'Tú' ? <MensajeUsuario key={index}><TituloMensaje>{message.user}</TituloMensaje>{message.message}</MensajeUsuario> : <MensajeIA key={index}><TituloMensaje><ImgMensajeIA src="icon_mr_robot.svg"/></TituloMensaje>{message.message}<BotonCopiar onClick={() => { handleCopiarMensajeIA(message.message)} } variant="outlined" iscopied={message.isCopied.toString()} >{ message.isCopied === true ? <FaCheckCircle /> : <FaCopy /> }</BotonCopiar></MensajeIA>
+        return message.user === 'Tú' ? <MensajeUsuario key={index}><TituloMensaje>{message.user}</TituloMensaje>{message.message}</MensajeUsuario> : <MensajeIA key={index}><TituloMensaje><ImgMensajeIA src="icon_mr_robot.svg"/></TituloMensaje>{
+          <FormattedMessage message={message.message} />
+        }<BotonCopiar onClick={() => { handleCopiarMensajeIA(message.message)} } variant="outlined" iscopied={message.isCopied.toString()} >{ message.isCopied === true ? <FaCheckCircle /> : <FaCopy /> }</BotonCopiar></MensajeIA>
       })
       :
       <ImagenChat src='/img_mr_robot.svg' alt="Img Presentación Mr Robot" />

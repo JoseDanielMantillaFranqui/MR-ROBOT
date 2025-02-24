@@ -67,6 +67,7 @@ export const useRobot = () => {
             console.error("Error fetching response:", error);
           } finally {
             setIsLoading(false);
+            textareaChatRef.current.style.height = '60px'
           }
         };
       
@@ -76,6 +77,8 @@ export const useRobot = () => {
 
     useEffect(() => {
         if (!obtenerRespuesta) return;
+
+        const respuestaFormateada = respuesta.replace(/\*/g, '<br>');
 
         const newIAMessage = {
             user: 'MR. ROBOT',
