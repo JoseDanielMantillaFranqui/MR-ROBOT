@@ -11,6 +11,28 @@ body {
     background-size: 40px 40px;
 }
 
+.textoFormateado {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.textoFormateado ul {
+  margin-left: 1rem;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.textoFormateado ol {
+    margin-left: 1rem;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
 @media screen and (min-width: 1000px) and (max-width:2000px) {
     body {
         background-image: linear-gradient(to right, #ffffff15 1px, transparent 1px), linear-gradient(to bottom, #ffffff19 1px, transparent 1px);
