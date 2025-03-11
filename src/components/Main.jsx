@@ -270,7 +270,7 @@ const MensajeIA = styled.div`
   }
 
   @media screen and (max-width:480px) {
-    max-width: 75%;
+    max-width: 85%;
   }
 `
 
