@@ -1,10 +1,13 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import '../App.css';
+import CodigoResaltado from "../components/CodigoResaltado";
 
 const FormattedMessage = ({ message }) => {
     return <div className='textoFormateado'>
-        <ReactMarkdown>
+    <ReactMarkdown components={{
+        code: CodigoResaltado,
+        }}>
         {message}
     </ReactMarkdown>
     </div>
