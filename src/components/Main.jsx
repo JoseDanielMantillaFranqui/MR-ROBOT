@@ -339,7 +339,7 @@ return <ContenedorPrincipal>
   <ContenedorMensajes ref={scrollableDivRef}  >
     {
       messages[0]?.user ? messages.map((message, index) => {
-        return message.user === 'Tú' ? <MensajeUsuario key={index}><TituloMensaje>{message.user}</TituloMensaje>{message.message}</MensajeUsuario> : <MensajeIA key={index}><TituloMensaje><ImgMensajeIA src="icon_mr_robot.svg"/></TituloMensaje>{
+        return message.user === 'Tú' ? <MensajeUsuario key={index}><TituloMensaje>{message.user}</TituloMensaje>{message.message}</MensajeUsuario> : <MensajeIA key={index}><TituloMensaje><ImgMensajeIA src="icon_mr_robot.gif"/></TituloMensaje>{
           <FormattedMessage message={message.message} />
         }<BotonCopiar onClick={() => { handleCopiarMensajeIA(message.message)} } variant="outlined" iscopied={message.isCopied.toString()} >{ message.isCopied === true ? <FaCheckCircle /> : <FaCopy /> }</BotonCopiar></MensajeIA>
       })
