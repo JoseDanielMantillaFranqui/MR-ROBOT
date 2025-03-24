@@ -16,7 +16,7 @@ export const useRobot = () => {
     const [historyMessagesIA, setHistoryMessagesIA] = useState([{ text: "Hola, soy Mr. Robot. ¿En qué puedo ayudarte?" }]);
 
     const genAI = new GoogleGenerativeAI(apiAuthorization);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash"});
 
     useEffect(() => {
         if (!obtenerRespuesta) return;
